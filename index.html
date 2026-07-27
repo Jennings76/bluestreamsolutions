@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Blue Mic | Sales Coaching &amp; CRM Automation for Enterprise Teams</title>
+<meta name="description" content="Blue Mic turns every sales conversation into CRM-ready notes, coaching, follow-up emails, and next steps, automatically. Reps record on the road with the iOS &amp; Android app, or paste a transcript from any tool. Enterprise only." />
+<meta name="theme-color" content="#F1F5FB" />
+<meta property="og:title" content="Blue Mic | Sales Coaching &amp; CRM Automation for Enterprise Teams" />
+<meta property="og:description" content="Every sales call, coached and in your CRM. Blue Mic drafts summary notes, follow-up emails, and reminders, and syncs them straight into your CRM." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://blue-mic.com/blue-mic-workflow.png" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css?v=2" />
+
+<!-- v3 additions: Enterprise re-focus components (nav CTA, workflow figure,
+     two-entry capture, manager dashboard preview, coming-soon badge). Kept
+     inline so styles.css is untouched. -->
+<style>
+  /* Workflow figure (holds the SVG diagram) */
+  .workflow-figure {
+    margin: clamp(40px, 6vw, 68px) auto 0;
+    max-width: 1120px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F5F8FF 100%);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-lg);
+    padding: clamp(14px, 2.4vw, 28px);
+    box-shadow: 0 8px 32px rgba(30,95,230,0.06), 0 1px 3px rgba(11,18,32,0.04);
+  }
+  .workflow-figure img { width: 100%; height: auto; display: block; border-radius: 12px; }
+
+  /* Coming-soon badge (amber variant of .tier-badge) */
+  .tier-badge--soon {
+    color: #8A5A00;
+    background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(251,191,36,0.18));
+    border-color: rgba(245,158,11,0.30);
+  }
+  .tier-badge--soon svg { color: #C77A00; }
+
+  /* Manager dashboard preview card */
+  .dash-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 380px;
+    background: white;
+    border-radius: 22px;
+    padding: 18px 16px 16px;
+    box-shadow: 0 16px 40px rgba(11,18,32,0.10), 0 2px 6px rgba(11,18,32,0.04);
+    border: 1px solid var(--line-soft);
+    font-family: var(--font-sans);
+    color: #000;
+  }
+  .dash-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 2px; }
+  .dash-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; color: #0B1220; }
+  .dash-soon {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #8A5A00; background: rgba(245,158,11,0.16); padding: 4px 9px; border-radius: 999px;
+  }
+  .dash-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .dash-kpi { background: #F5F8FF; border: 1px solid var(--line-soft); border-radius: 14px; padding: 12px 14px; }
+  .dash-kpi .k { font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .dash-kpi .v { font-family: var(--font-serif); font-size: 27px; line-height: 1; color: var(--blue); }
+  .dash-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #8A8A8E; margin: 4px 2px 10px; }
+  .dash-rep { display: grid; grid-template-columns: 58px 1fr 34px; gap: 10px; align-items: center; margin-bottom: 10px; font-size: 12px; color: var(--ink-2); }
+  .dash-rep .nm { font-weight: 600; color: #0B1220; }
+  .dash-bar { height: 8px; border-radius: 999px; background: var(--bg-soft); overflow: hidden; }
+  .dash-bar span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--blue-bright), var(--blue)); }
+  .dash-rep .pct { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; text-align: right; }
+  /* CRM integrations: Bullhorn + HubSpot side by side */
+  .crm-current-title { text-align: center; margin-bottom: 18px; }
+  .crm-current-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 720px; margin: 0 auto clamp(32px, 5vw, 48px); }
+  .crm-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 720px; margin: 0 auto; align-items: start; }
+  @media (max-width: 760px) {
+    .crm-current-grid { grid-template-columns: 1fr; max-width: 420px; }
+    .crm-secondary { grid-template-columns: 1fr; max-width: 420px; gap: 28px; }
+  }
+
+  /* Platform availability badges (hero) */
+  .platforms { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .platform { display: inline-flex; align-items: center; gap: 7px; padding: 8px 15px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.72); font-size: 14px; font-weight: 600; color: var(--ink-2); }
+  .platform svg { width: 15px; height: 15px; color: var(--blue); }
+
+  /* Interactive Manager Dashboard mockup */
+  .mgr-figure { position: relative; max-width: 1180px; margin: clamp(8px, 1.5vw, 20px) auto 0; aspect-ratio: 1860 / 1124; }
+  .mgr-win { position: absolute; padding: 0; border: 0; background: none; -webkit-appearance: none; appearance: none; cursor: zoom-in; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)); transform-origin: center; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+  .mgr-win > img { width: 100%; height: auto; display: block; border-radius: 12px; box-shadow: 0 14px 30px rgba(16,48,92,0.14); transition: box-shadow .3s ease; }
+  .mgr-win:hover, .mgr-win:focus-visible { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1.05) translateY(-10px); z-index: 30 !important; outline: none; }
+  .mgr-win:hover > img, .mgr-win:focus-visible > img { box-shadow: 0 26px 52px rgba(16,48,92,0.20); }
+  /* Single-image zoom (Team Meetings hero) */
+  .img-zoom { display: block; width: 100%; padding: 0; border: 0; background: none; -webkit-appearance: none; appearance: none; cursor: zoom-in; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+  .img-zoom > img { width: 100%; height: auto; display: block; }
+  .img-zoom:hover, .img-zoom:focus-visible { transform: translateY(-6px) scale(1.015); outline: none; }
+  .mgr-hint { position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%); font-size: 12.5px; color: var(--muted); background: rgba(255,255,255,0.9); border: 1px solid var(--line-soft); padding: 5px 13px; border-radius: 999px; pointer-events: none; }
+  .mgr-lightbox { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 3vmin; background: rgba(11,18,32,0.62); opacity: 0; visibility: hidden; transition: opacity .25s ease; cursor: zoom-out; }
+  .mgr-lightbox.open { opacity: 1; visibility: visible; }
+  .mgr-lightbox img { max-width: 95vw; max-height: 90vh; width: auto; height: auto; border-radius: 14px; box-shadow: 0 30px 90px rgba(0,0,0,0.45); cursor: zoom-out; }
+  .mgr-lb-close { position: absolute; top: 18px; right: 22px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,0.92); color: #0B1220; font-size: 26px; line-height: 1; cursor: pointer; }
+  @media (max-width: 640px) { .mgr-hint { display: none; } }
+
+  /* Tighter "Bring Blue Mic to your sales team" CTA height */
+  .cta { padding: clamp(48px, 7vw, 92px) 0; }
+</style>
+
+<script>
+  /* Always start at the top on refresh / navigation. */
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.addEventListener('pageshow', function() {
+    window.scrollTo(0, 0);
+  });
+</script>
+</head>
+<body>
+
+<div class="bg-stage" aria-hidden="true"></div>
+
+<!-- Nav -->
+<header class="nav">
+  <div class="container nav-row">
+    <a href="#top" class="brand" aria-label="Blue Mic home">
+      <img class="brand-logo-img" src="logo.png" alt=""
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <svg class="logo" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"  stop-color="#3B82F6"/>
+            <stop offset="55%" stop-color="#1E5FE6"/>
+            <stop offset="100%" stop-color="#1E3A8A"/>
+          </linearGradient>
+        </defs>
+        <circle cx="18" cy="18" r="17" fill="url(#lg)"/>
+        <rect x="14.5" y="9" width="7" height="13" rx="3.5" fill="white"/>
+        <path d="M11 19a7 7 0 0014 0" stroke="white" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+        <line x1="18" y1="24" x2="18" y2="27.5" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+      <span>Blue Mic</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#works">How It Works</a>
+      <a href="#coach">Sales Coach</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#team-meetings">Team Meetings</a>
+      <a href="#security">Security</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <nav class="mobile-menu-links" aria-label="Mobile primary">
+    <a href="#works">How It Works</a>
+    <a href="#coach">Sales Coach</a>
+    <a href="#integrations">Integrations</a>
+    <a href="#team-meetings">Team Meetings</a>
+    <a href="#security">Security</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</div>
+
+<main id="top">
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="hero-mark">
+      <div class="waveform" aria-hidden="true"></div>
+      <img class="hero-logo-img" src="logo.png" alt="Blue Mic"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <svg class="hero-logo-svg" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;">
+        <defs>
+          <linearGradient id="hg" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"  stop-color="#3B82F6"/>
+            <stop offset="55%" stop-color="#1E5FE6"/>
+            <stop offset="100%" stop-color="#1E3A8A"/>
+          </linearGradient>
+        </defs>
+        <circle cx="48" cy="48" r="46" fill="url(#hg)"/>
+        <rect x="38" y="22" width="20" height="36" rx="10" fill="white"/>
+        <path d="M28 50a20 20 0 0040 0" stroke="white" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <line x1="48" y1="64" x2="48" y2="74" stroke="white" stroke-width="4.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <span class="eyebrow">Sales Coaching &amp; CRM Automation &middot; Enterprise</span>
+    <h1>Record. Coach.<br><span class="italic">Take Action.</span></h1>
+    <p class="lede">
+      Blue Mic turns every sales conversation into coaching, CRM-ready notes, follow-up emails, and next-step reminders, automatically. Your reps record meetings on the road, or paste a transcript from any tool, and Blue Mic runs the entire post-call workflow.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-ghost btn-lg" href="#works">See How It Works</a>
+    </div>
+    <div class="platforms" aria-label="Available on iPhone, Android, and the Web App">
+      <span class="platform"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 12.7c0-2.1 1.7-3.1 1.8-3.2-1-1.4-2.5-1.6-3-1.6-1.3-.1-2.5.8-3.1.8-.6 0-1.6-.7-2.7-.7-1.4 0-2.6.8-3.3 2-1.4 2.4-.4 6 1 8 .7 1 1.4 2 2.4 2 .9 0 1.3-.6 2.4-.6 1.1 0 1.4.6 2.4.6 1 0 1.6-.9 2.3-1.9.7-1.1 1-2.1 1-2.2-.1 0-1.9-.7-1.9-2.9zM15.5 6.3c.5-.6.9-1.5.8-2.4-.8 0-1.7.5-2.2 1.1-.5.6-.9 1.5-.8 2.3.9.1 1.7-.5 2.2-1z"/></svg> iPhone</span>
+      <span class="platform"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.3 6.3l.9-1.6a.3.3 0 00-.52-.3l-.92 1.68A5.7 5.7 0 0012 5.5c-.99 0-1.92.2-2.75.58L8.34 4.4a.3.3 0 00-.52.3l.9 1.6C7.2 7.22 6.25 8.72 6.25 10.4h11.5c0-1.68-.95-3.18-2.45-4.1zM9.6 8.7a.66.66 0 110-1.32.66.66 0 010 1.32zm4.8 0a.66.66 0 110-1.32.66.66 0 010 1.32zM6.3 11v6.3c0 .5.4.9.9.9h.85v2.35a1.05 1.05 0 002.1 0V18.2h1.7v2.35a1.05 1.05 0 002.1 0V18.2h.85c.5 0 .9-.4.9-.9V11H6.3zM4.65 11a1.05 1.05 0 00-1.05 1.05v4.35a1.05 1.05 0 002.1 0v-4.35A1.05 1.05 0 004.65 11zM19.35 11a1.05 1.05 0 00-1.05 1.05v4.35a1.05 1.05 0 002.1 0v-4.35A1.05 1.05 0 0019.35 11z"/></svg> Android</span>
+      <span class="platform"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"/></svg> Web App</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- Stats: metric ribbon -->
+<section class="stats-ribbon-section" style="padding: clamp(40px, 6vw, 64px) 0 0;">
+  <div class="container">
+    <div class="stats-ribbon">
+      <div class="ribbon-stat">
+        <div class="ribbon-num">3</div>
+        <div class="ribbon-label">Ways to capture</div>
+        <div class="ribbon-sub">iPhone, Android, or paste a transcript</div>
+      </div>
+      <div class="ribbon-stat">
+        <div class="ribbon-num">5</div>
+        <div class="ribbon-label">Sales Coach reports &amp; actions</div>
+        <div class="ribbon-sub">Wins, objectives, coaching, emails, notes</div>
+      </div>
+      <div class="ribbon-stat">
+        <div class="ribbon-num ribbon-num--text">Every call</div>
+        <div class="ribbon-label">Coaching on demand</div>
+        <div class="ribbon-sub">Not just the ones a manager sits in on</div>
+      </div>
+      <div class="ribbon-stat">
+        <div class="ribbon-num ribbon-num--text">CRM-native</div>
+        <div class="ribbon-label">Notes, tasks &amp; follow-ups</div>
+        <div class="ribbon-sub">Synced to Bullhorn &amp; HubSpot</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How Blue Mic Works (workflow graphic + 3-beat) -->
+<section id="works" class="works reveal">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">How Blue Mic Works</span>
+    <h2 style="max-width:20ch; margin-left:auto; margin-right:auto;">From conversation to <span class="italic">a closed loop.</span></h2>
+    <p class="lede" style="margin: 18px auto 0; text-align:center;">
+      One workflow, whether the meeting was recorded in the field or pasted in from another tool: Blue Mic coaches the call, writes the CRM notes, drafts the follow-ups, and reminds the rep to send them.
+    </p>
+
+    <figure class="workflow-figure">
+      <img src="blue-mic-workflow.svg" alt="The Blue Mic workflow: capture a meeting by recording on the road with the iOS or Android app or by pasting a transcript, run Sales Coach to surface wins, score priority objectives, and generate coaching, then sync summary notes, follow-up tasks and reminders, and drafted emails back to your CRM." />
+    </figure>
+
+    <div class="three-beats">
+      <article class="beat">
+        <h3>Capture anywhere</h3>
+        <p>Record in-person and on-the-road meetings with the Blue Mic app for iOS and Android, or paste a transcript from any other meeting tool.</p>
+      </article>
+      <article class="beat">
+        <h3>Coach every call</h3>
+        <p>Sales Coach surfaces the wins, scores your priority objectives, and delivers coaching on what was missed or could improve.</p>
+      </article>
+      <article class="beat">
+        <h3>Sync to your CRM</h3>
+        <p>Summary notes, follow-up tasks and reminders, and drafted emails flow straight into your CRM, with no end-of-day data entry.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="container" id="coach" style="margin-top: clamp(44px, 6vw, 80px);">
+    <div class="product-row reverse">
+      <div class="product-text">
+        <span class="tier-badge tier-badge--solo">
+          <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M6 0.5l1.4 3.1L10.5 5l-3.1 1.4L6 9.5 4.6 6.4 1.5 5l3.1-1.4z"/></svg>
+          The heart of Blue Mic
+        </span>
+        <h2>Blue Mic <span class="italic">Sales Coach.</span></h2>
+        <p class="lede">
+          Assign a role to each speaker (Sales Rep, Client Contact), and Blue Mic runs the complete post-call workflow shown above, coaching the rep and doing the CRM busywork for them. One run delivers every report and action, from post-meeting wins and priority-objective scoring on the Blue Mic Trifecta Award to drafted follow-ups and the CRM-ready summary note.
+        </p>
+        <p class="contact-line">
+          Contact <a href="mailto:info@blue-mic.com">info@blue-mic.com</a> to bring Sales Coach to your team.
+        </p>
+      </div>
+
+      <div class="product-visual">
+        <div class="coach-card" aria-hidden="true">
+          <div class="coach-head">
+            <span class="coach-close">Close</span>
+            <span class="coach-title">Sales Coach</span>
+            <span></span>
+          </div>
+
+          <div class="coach-section-label">Speakers</div>
+
+          <div class="coach-speaker">
+            <div class="coach-speaker-info">
+              <div class="name">Alex Morgan</div>
+              <div class="email">amorgan@example.com
+                <svg class="link-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 9.5l3-3"/><path d="M9 5l1.2-1.2a2.4 2.4 0 113.4 3.4L12.4 8.4"/><path d="M7 11l-1.2 1.2a2.4 2.4 0 11-3.4-3.4L3.6 7.6"/></svg>
+              </div>
+            </div>
+            <div class="role">Sales Rep
+              <svg viewBox="0 0 12 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l3-3 3 3"/><path d="M3 9l3 3 3-3"/></svg>
+            </div>
+          </div>
+
+          <div class="coach-speaker">
+            <div class="coach-speaker-info">
+              <div class="name">Jamie Park</div>
+              <div class="email">jpark@example.org
+                <svg class="link-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 9.5l3-3"/><path d="M9 5l1.2-1.2a2.4 2.4 0 113.4 3.4L12.4 8.4"/><path d="M7 11l-1.2 1.2a2.4 2.4 0 11-3.4-3.4L3.6 7.6"/></svg>
+              </div>
+            </div>
+            <div class="role">Client Contact
+              <svg viewBox="0 0 12 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l3-3 3 3"/><path d="M3 9l3 3 3-3"/></svg>
+            </div>
+          </div>
+
+          <div class="coach-speaker">
+            <div class="coach-speaker-info">
+              <div class="name">Riley Chen</div>
+              <div class="email">rchen@example.com
+                <svg class="link-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 9.5l3-3"/><path d="M9 5l1.2-1.2a2.4 2.4 0 113.4 3.4L12.4 8.4"/><path d="M7 11l-1.2 1.2a2.4 2.4 0 11-3.4-3.4L3.6 7.6"/></svg>
+              </div>
+            </div>
+            <div class="role">Sales Rep
+              <svg viewBox="0 0 12 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l3-3 3 3"/><path d="M3 9l3 3 3-3"/></svg>
+            </div>
+          </div>
+
+          <div class="coach-section-label" style="margin-top:14px;">Assistant Process</div>
+
+          <div class="coach-process-item">
+            <span class="check-green">
+              <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5"/></svg>
+            </span>
+            <div>
+              <div class="proc-title">Sales Summary Notes</div>
+              <div class="proc-sub">Review, update &amp; send notes to your CRM</div>
+            </div>
+            <span class="chev">&rsaquo;</span>
+          </div>
+
+          <div class="coach-process-item">
+            <span class="check-green">
+              <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5"/></svg>
+            </span>
+            <div>
+              <div class="proc-title">Priority Objectives</div>
+              <div class="proc-sub">Problem, Impact &amp; Point of View (Blue Mic Trifecta Award)</div>
+            </div>
+            <span class="chev">&rsaquo;</span>
+          </div>
+
+          <div class="coach-process-item">
+            <span class="check-green">
+              <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5"/></svg>
+            </span>
+            <div>
+              <div class="proc-title">Post Meeting Wins</div>
+              <div class="proc-sub">Top 3 wins from the call</div>
+            </div>
+            <span class="chev">&rsaquo;</span>
+          </div>
+
+          <div class="coach-process-item">
+            <span class="check-green">
+              <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5"/></svg>
+            </span>
+            <div>
+              <div class="proc-title">Coaching Suggestions</div>
+              <div class="proc-sub">What was missed or could be improved</div>
+            </div>
+            <span class="chev">&rsaquo;</span>
+          </div>
+
+          <div class="coach-process-item">
+            <span class="check-green">
+              <svg viewBox="0 0 14 14" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7.5l2.5 2.5L11 4.5"/></svg>
+            </span>
+            <div>
+              <div class="proc-title">Draft Client Emails</div>
+              <div class="proc-sub">Draft follow-ups &amp; send a Task to your CRM</div>
+            </div>
+            <span class="chev">&rsaquo;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why: rep benefits -->
+<section id="why" class="why reveal">
+  <div class="container">
+    <span class="eyebrow">Why sales teams choose Blue Mic</span>
+    <h2>Give every rep back their afternoons, and a coach on every call.</h2>
+
+    <div class="cards">
+      <article class="card">
+        <svg class="icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 6h16"/>
+          <path d="M8 12h16"/>
+          <path d="M8 18h10"/>
+          <path d="M22 22l3 3 5-5"/>
+        </svg>
+        <h3>CRM notes, written for them</h3>
+        <p>Blue Mic drafts the Sales Summary Note from the meeting and sends it to your CRM. Reps review and submit in seconds instead of retyping notes at the end of the day.</p>
+      </article>
+
+      <article class="card">
+        <svg class="icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="5" y="8" width="22" height="16" rx="2"/>
+          <path d="M5 10l11 8 11-8"/>
+        </svg>
+        <h3>Follow-ups that don&rsquo;t slip</h3>
+        <p>Blue Mic drafts the next-steps email from the conversation and pushes a follow-up task and reminder into your CRM, so nothing falls through after the call.</p>
+      </article>
+
+      <article class="card">
+        <svg class="icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="16" cy="16" r="11"/>
+          <circle cx="16" cy="16" r="5"/>
+          <circle cx="16" cy="16" r="1" fill="currentColor"/>
+        </svg>
+        <h3>A coach on every call</h3>
+        <p>Post-meeting wins, priority-objective scoring (the Blue Mic Trifecta Award), and coaching on what was missed. For every rep, on every meeting, not just the ones a manager can sit in on.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Product 01: Capture anywhere -->
+<section class="product reveal">
+  <div class="container">
+    <div class="product-row">
+      <div class="product-text">
+        <span class="tier-badge tier-badge--solo">
+          <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M6 0.5l1.4 3.1L10.5 5l-3.1 1.4L6 9.5 4.6 6.4 1.5 5l3.1-1.4z"/></svg>
+          iOS &middot; Android &middot; Paste
+        </span>
+        <h2>Record on the road, or <span class="italic">paste from anywhere.</span></h2>
+        <p class="lede">
+          Reps in the field record meetings with the Blue Mic app on iOS and Android: one tap, a live waveform, and a polished transcript the moment they stop. Back in the office on a different recorder? Paste the transcript into Blue Mic and run the exact same workflow.
+        </p>
+        <ul>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Record live with the Blue Mic app on iOS and Android</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Paste a transcript from any meeting recorder or notetaker</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Open the web app in any browser to review meetings and run Sales Coach</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Either way, every meeting runs the full Sales Coach workflow</li>
+        </ul>
+      </div>
+
+      <div class="product-visual">
+        <div class="iphone" role="img" aria-label="Blue Mic iPhone app: recording screen">
+          <div class="iphone-screen iphone-screen--app">
+            <div class="iphone-status">
+              <span>3:00</span>
+              <span class="status-right">
+                <svg width="14" height="9" viewBox="0 0 14 9" fill="currentColor" aria-hidden="true"><rect x="0"  y="6" width="2" height="3" rx="0.4"/><rect x="3"  y="4" width="2" height="5" rx="0.4"/><rect x="6"  y="2" width="2" height="7" rx="0.4"/><rect x="9"  y="0" width="2" height="9" rx="0.4" opacity="0.35"/></svg>
+                <svg width="13" height="9" viewBox="0 0 13 9" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M1 4.2a8 8 0 0111 0"/><path d="M3 6a5 5 0 017 0"/><circle cx="6.5" cy="7.7" r="0.7" fill="currentColor"/></svg>
+                <span class="batt"><span class="batt-fill"></span></span>
+              </span>
+            </div>
+
+            <div class="rec-app">
+              <h4 class="rec-title">Recording</h4>
+              <button type="button" class="rec-pause">Pause</button>
+
+              <div class="rec-timer">6:51</div>
+
+              <div class="iphone-wave rec-wave" aria-hidden="true"></div>
+
+              <div class="rec-bottom">
+                <div class="rec-stop-wrap">
+                  <svg class="rec-stop-orbit" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle cx="50" cy="50" r="46" fill="none"
+                            stroke="rgba(120, 175, 255, 0.55)" stroke-width="5.5"
+                            stroke-linecap="round"
+                            pathLength="360" stroke-dasharray="60 360"/>
+                  </svg>
+                  <button type="button" class="rec-stop" aria-label="Stop recording">
+                    <span class="rec-stop-icon"></span>
+                  </button>
+                </div>
+                <span class="rec-dark">Dark</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Integrations -->
+<section class="product reveal" style="background: linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%); border-top: none;">
+  <div class="container">
+    <!-- CRM integrations sub-band -->
+    <div id="integrations" class="crm-band">
+      <span class="crm-band-eyebrow">Connects with your CRM</span>
+
+      <div class="crm-tier-title crm-current-title">Current Integrations</div>
+      <div class="crm-current-grid">
+          <div class="crm-chip crm-chip--live">
+            <img src="bullhorn-logo.png" alt="Bullhorn" class="crm-brand-logo"
+                 width="200" height="80"
+                 style="height:80px;width:auto;max-width:280px;display:block;object-fit:contain;"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <div class="crm-logo" style="display:none;">
+              <svg class="crm-logo-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M3 13h6l12-6v18l-12-6H3a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z" fill="#FB6B07"/>
+                <path d="M24 11.5q4 4.5 0 9" stroke="#FB6B07" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path d="M28 9q4 7 0 14" stroke="#FB6B07" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.55"/>
+              </svg>
+              <span class="crm-wordmark">Bullhorn</span>
+            </div>
+            <span class="crm-status crm-status--live">
+              <span class="crm-status-dot"></span>
+              Live
+            </span>
+          </div>
+          <div class="crm-chip crm-chip--live">
+            <img src="hubspot-logo.png" alt="HubSpot" class="crm-brand-logo"
+                 width="200" height="57"
+                 style="height:36px;width:auto;max-width:205px;display:block;object-fit:contain;padding:22px 0;box-sizing:content-box;"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';">
+            <div class="crm-logo" style="display:none;">
+              <svg class="crm-logo-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="19" cy="16" r="7" fill="none" stroke="#FF7A59" stroke-width="3"/>
+                <circle cx="6.5" cy="7.5" r="3.2" fill="#FF7A59"/>
+                <circle cx="6.5" cy="24.5" r="3.2" fill="#FF7A59"/>
+                <circle cx="19" cy="3.4" r="2.6" fill="#FF7A59"/>
+                <path d="M9.2 9.2 L13.6 12.6 M9.2 22.8 L13.6 19.4 M19 6 L19 9" stroke="#FF7A59" stroke-width="2" stroke-linecap="round" fill="none"/>
+              </svg>
+              <span class="crm-wordmark">HubSpot</span>
+            </div>
+            <span class="crm-status crm-status--live">
+              <span class="crm-status-dot"></span>
+              Live
+            </span>
+          </div>
+      </div>
+
+      <div class="crm-secondary">
+        <!-- On the Roadmap -->
+        <div class="crm-tier">
+          <div class="crm-tier-title">On the Roadmap</div>
+          <div class="crm-roadmap">
+            <div class="crm-roadmap-item">
+              <span class="crm-dot" style="background: #00A1E0;"></span>
+              <span>Salesforce</span>
+            </div>
+            <div class="crm-roadmap-item">
+              <span class="crm-dot" style="background: #1B5A9E;"></span>
+              <span>Aviont&eacute;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier 3: Don't see yours? -->
+        <div class="crm-tier crm-tier--cta">
+          <div class="crm-tier-title">Don't see your CRM?</div>
+          <p class="crm-cta-text">Let's talk about connecting your CRM to Blue Mic.</p>
+          <a href="mailto:info@blue-mic.com?subject=CRM%20integration%20inquiry" class="crm-cta-link">
+            Discuss next steps <span class="arrow">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Meetings (live manager feature) -->
+<section id="team-meetings" class="works reveal" style="background: var(--bg-soft); border-top: none;">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">For Sales Managers</span>
+    <h2 style="max-width:22ch; margin-left:auto; margin-right:auto;">Every rep's meetings, in <span class="italic">one place.</span></h2>
+    <p class="lede" style="margin: 18px auto 0; text-align:center;">
+      Team Meetings gives managers a read-only view of every meeting their reps record or paste in, complete with Sales Coach results and awards. Open any call to review its summary, transcript, audio, and coaching, for the whole team.
+    </p>
+
+    <figure style="margin: clamp(32px, 5vw, 56px) auto 0; max-width: 1180px;">
+      <button class="img-zoom" data-img="team-meetings-window.png" aria-label="Enlarge: Team Meetings view">
+        <img src="team-meetings.png" alt="Blue Mic Team Meetings: a manager's read-only view of their sales reps' meetings, showing Sales Coach award badges (bronze, silver, gold), coaching status, per-rep activity, and team-wide meeting stats." />
+      </button>
+    </figure>
+  </div>
+</section>
+
+<!-- Manager Dashboards (Coming Soon) -->
+<section id="managers" class="product reveal" style="background: var(--bg); border-top: none;">
+  <div class="container" style="text-align:center;">
+    <div class="product-text" style="max-width: 860px; margin: 0 auto; text-align: center;">
+      <span class="tier-badge tier-badge--soon">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2.5 1.5"/></svg>
+        Coming Soon
+      </span>
+      <h2 style="margin-top: 22px;">Manager <span class="italic">Dashboards.</span></h2>
+      <p class="lede">
+        A live view for sales leadership, built automatically from the meetings your reps are already recording. See who's improving, where every opportunity stands, and exactly where your attention will move the needle.
+      </p>
+      <ul style="display:inline-block; text-align:left; margin: 0 auto;">
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Track rep performance and coaching progress over time</li>
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> See team opportunities and where each deal stands</li>
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Prioritize where leadership attention matters most</li>
+        <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Roll-ups built automatically from Sales Coach output</li>
+      </ul>
+      <p class="contact-line">
+        Want early access? Email <a href="mailto:info@blue-mic.com?subject=Manager%20Dashboards%20early%20access">info@blue-mic.com</a>.
+      </p>
+    </div>
+
+    <figure class="mgr-figure">
+      <button class="mgr-win" style="left:25.3%; top:26.8%; width:43.3%; --rot:-7deg; z-index:1;" data-img="manager-window-strengths.png" aria-label="Enlarge: Top strengths and team coaching progress"><img src="manager-window-strengths.png" alt="" /></button>
+      <button class="mgr-win" style="left:64.6%; top:18.8%; width:32.5%; --rot:4deg; z-index:2;" data-img="manager-window-medals.png" aria-label="Enlarge: TriFecta medals and scores"><img src="manager-window-medals.png" alt="" /></button>
+      <button class="mgr-win" style="left:22.4%; top:69.4%; width:42.2%; --rot:-2deg; z-index:3;" data-img="manager-window-funnel.png" aria-label="Enlarge: Funnel and conversion"><img src="manager-window-funnel.png" alt="" /></button>
+      <button class="mgr-win" style="left:70.5%; top:62.4%; width:55.7%; --rot:2deg; z-index:4;" data-img="manager-window-lead.png" aria-label="Enlarge: Leadership view with company temperature and account engagement"><img src="manager-window-lead.png" alt="" /></button>
+      <span class="mgr-hint">Click or tap a panel to enlarge</span>
+    </figure>
+  </div>
+</section>
+
+<!-- Privacy & Security -->
+<section id="security" class="security reveal">
+  <div class="container">
+    <div style="text-align:center; max-width:780px; margin:0 auto clamp(40px,6vw,64px);">
+      <span class="eyebrow">Privacy &amp; Security</span>
+      <h2>Your meetings stay private. By design.</h2>
+      <p class="lede" style="margin:18px auto 0; text-align:center;">
+        Blue Mic was built privacy-first. Meeting audio is encrypted, access is restricted to authenticated users, and any sharing happens through secure, expiring codes, never public links that can leak, get indexed, or be opened by anyone who stumbles on them.
+      </p>
+    </div>
+
+    <div class="security-grid">
+      <article class="sec-card">
+        <span class="sec-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="16" r="11"/><path d="M5 16h22"/><path d="M16 5c3.5 3 3.5 19 0 22M16 5c-3.5 3-3.5 19 0 22"/></svg>
+        </span>
+        <h4>US data residency</h4>
+        <p>All data is stored and processed in the United States, on AWS.</p>
+      </article>
+
+      <article class="sec-card">
+        <span class="sec-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 5 L18 14 L27 16 L18 18 L16 27 L14 18 L5 16 L14 14 Z"/></svg>
+        </span>
+        <h4>Never used to train AI</h4>
+        <p>Your transcripts and meetings run through the AI providers' business APIs, never their consumer products, and none of them train their models on your data.</p>
+      </article>
+
+      <article class="sec-card">
+        <span class="sec-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="13" r="5"/><path d="M7 26a9 9 0 0118 0"/></svg>
+        </span>
+        <h4>Authenticated access only</h4>
+        <p>Meetings are only accessible to authenticated Blue Mic users on your team, never exposed on the open web.</p>
+      </article>
+
+      <article class="sec-card">
+        <span class="sec-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7l11 6 11-6"/><rect x="5" y="7" width="22" height="18" rx="2"/><path d="M7 25l8-7M25 25l-8-7"/></svg>
+        </span>
+        <h4>No public exposure</h4>
+        <p>No link previews, no browser history, no accidental indexing. Your meeting content stays private.</p>
+      </article>
+
+      <article class="sec-card">
+        <span class="sec-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 4l9 4v8c0 6-4 10-9 12-5-2-9-6-9-12V8z"/><path d="M11 16l4 4 6-7"/></svg>
+        </span>
+        <h4>Tenant-isolated</h4>
+        <p>Each organization's meetings, notes, and settings are isolated to that tenant, so teams never see each other's data.</p>
+      </article>
+
+      <article class="sec-card">
+        <span class="sec-icon">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="14" width="18" height="13" rx="2"/><path d="M11 14V9a5 5 0 0110 0v5"/><circle cx="16" cy="20" r="1.5" fill="currentColor"/><path d="M16 22v2"/></svg>
+        </span>
+        <h4>Encrypted in transit &amp; at rest</h4>
+        <p>Audio, transcripts, and notes are encrypted in transit (TLS 1.2+) and at rest (AES-256), with public access blocked.</p>
+      </article>
+    </div>
+
+    <div class="security-callout">
+      <p><strong>Why this matters.</strong> Many transcription tools share meetings through public web links, and the moment one of those URLs ends up somewhere it shouldn't, the meeting is gone:</p>
+      <ul>
+        <li>Public links / "anyone with a link" means a leaked URL = leaked meeting content</li>
+        <li>Web viewers get crawled, cached, and screenshotted by link-preview bots</li>
+        <li>Browser history and shared devices can persist content long after the share is "revoked"</li>
+        <li>No authentication requirement means no accountability for who accessed what</li>
+      </ul>
+      <p>Blue Mic was designed to close every one of those gaps.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="reveal">
+  <div class="container" style="max-width: 760px; text-align:center;">
+    <span class="eyebrow">FAQ</span>
+    <h2>Frequently asked questions.</h2>
+
+    <div style="margin-top: clamp(40px, 6vw, 64px); text-align: left; display: grid; gap: 12px;">
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          How do reps capture meetings?
+          <span style="color: var(--blue); font-size: 22px; transition: transform .2s;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Two ways. On the road, reps record with the Blue Mic app for iOS and Android: one tap, and Blue Mic produces the transcript and summary automatically. In the office on another recorder or notetaker, they simply paste the transcript into Blue Mic and run the exact same coaching, notes, and follow-up workflow.</div>
+      </details>
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          What platforms is Blue Mic available on?
+          <span style="color: var(--blue); font-size: 22px;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Blue Mic is available as an iPhone app, an Android app, and a web app. Reps record and run the full workflow on iOS and Android in the field, and the web app gives your team browser access to meetings, Sales Coach, and (coming soon) manager dashboards.</div>
+      </details>
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          Which CRMs does Blue Mic connect to?
+          <span style="color: var(--blue); font-size: 22px;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Blue Mic syncs summary notes, follow-up tasks, and drafted emails to Bullhorn and HubSpot today, with Salesforce and Avionté on the roadmap. Don't see yours? We'd like to hear about it. Email info@blue-mic.com.</div>
+      </details>
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          What does Sales Coach actually do?
+          <span style="color: var(--blue); font-size: 22px;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">After every meeting, Sales Coach surfaces the top wins, scores your priority objectives (Problem, Impact &amp; Point of View) to earn the Blue Mic Trifecta Award, and gives coaching suggestions on what was missed or could improve. It also drafts the follow-up emails and the CRM-ready summary note, so the rep just reviews and sends.</div>
+      </details>
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          Do we have to change how our team already records meetings?
+          <span style="color: var(--blue); font-size: 22px;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">No. If your reps already use another meeting recorder or transcription tool, they can paste that transcript straight into Blue Mic and still get the full coaching, notes, and follow-up workflow.</div>
+      </details>
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          Is Blue Mic available to individuals?
+          <span style="color: var(--blue); font-size: 22px;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Blue Mic is focused on Enterprise sales teams. Access is provisioned for your organization rather than sold individually. Contact info@blue-mic.com to get your team set up.</div>
+      </details>
+      <details class="card" style="padding: 0;">
+        <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
+          How is our data protected?
+          <span style="color: var(--blue); font-size: 22px;">+</span>
+        </summary>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Meeting audio is encrypted in transit and at rest in AWS with public access blocked, each organization's data is isolated to its own tenant, and meetings are only accessible to authenticated Blue Mic users, never exposed on the open web. See the security section above for the full picture.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- Final CTA -->
+<section class="cta">
+  <div class="container">
+    <h2>Bring Blue Mic to your <span class="italic">sales team.</span></h2>
+    <p>Blue Mic is available exclusively for Enterprise teams. Tell us about your reps and your CRM, and we'll set up a demo.</p>
+    <p style="margin: 4px 0 0;"><a href="mailto:info@blue-mic.com?subject=Blue%20Mic%20Enterprise%20inquiry" style="color:#fff; font-weight:600; border-bottom:1px solid rgba(255,255,255,0.55); padding-bottom:2px;">info@blue-mic.com</a></p>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand">
+          <svg class="logo" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="18" cy="18" r="17" fill="rgba(255,255,255,0.12)"/>
+            <rect x="14.5" y="9" width="7" height="13" rx="3.5" fill="white"/>
+            <path d="M11 19a7 7 0 0014 0" stroke="white" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+            <line x1="18" y1="24" x2="18" y2="27.5" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <span>Blue Mic</span>
+        </div>
+      </div>
+
+      <div class="footer-side">
+        <a href="mailto:info@blue-mic.com">info@blue-mic.com</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Blue Stream Solutions LLC. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<div class="mgr-lightbox" id="mgrLightbox" aria-hidden="true">
+  <button class="mgr-lb-close" aria-label="Close">&times;</button>
+  <img id="mgrLightboxImg" alt="" />
+</div>
+</body>
+</html>

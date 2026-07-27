@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 360 340" width="360" height="340">
+  <rect width="360" height="340" fill="#EAF0FA"/>
+  <text x="30" y="34" font-family="Arial" font-size="11" font-weight="700" letter-spacing="1.5" fill="#5B6478">CURRENT INTEGRATIONS</text>
+  <rect x="30" y="50" width="300" height="120" rx="20" fill="#FFFFFF" stroke="#7ED9A6" stroke-width="1.5"/>
+  <image x="80" y="62" width="199" height="80" preserveAspectRatio="xMidYMid meet" xlink:href="bullhorn-logo.png"/>
+  <rect x="150" y="150" width="60" height="16" rx="8" fill="#DFF5E6"/>
+  <circle cx="163" cy="158" r="3" fill="#34C759"/><text x="171" y="162" font-family="Arial" font-size="10" fill="#0F7A3F">Live</text>
+  <rect x="30" y="185" width="300" height="120" rx="20" fill="#FFFFFF" stroke="#7ED9A6" stroke-width="1.5"/>
+  <image x="40" y="205" width="280" height="80" preserveAspectRatio="xMidYMid meet" xlink:href="hubspot-logo.png"/>
+  <rect x="150" y="285" width="60" height="16" rx="8" fill="#DFF5E6"/>
+  <circle cx="163" cy="293" r="3" fill="#34C759"/><text x="171" y="297" font-family="Arial" font-size="10" fill="#0F7A3F">Live</text>
+</svg>
