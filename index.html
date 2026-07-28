@@ -105,6 +105,27 @@
 
   /* Tighter "Bring Blue Mic to your sales team" CTA height */
   .cta { padding: clamp(48px, 7vw, 92px) 0; }
+  /* ===== Blue Stream Solutions: full-page water background + branding ===== */
+  .page-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; background-image: url('hero-poster.jpg?v=7'); background-size: cover; background-position: center 60%; background-color: #0B1220; }
+  .page-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; opacity: 0; transition: opacity 2.5s ease; }
+  .page-bg-video.is-active { opacity: 1; }
+  .page-bg-tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(241,245,251,0.72) 0%, rgba(241,245,251,0.82) 100%); }
+  @media (prefers-reduced-motion: reduce) { .page-bg-video { display: none; } .page-bg-tint { background: var(--bg); } }
+  @media (max-width: 600px) { .page-bg-tint { background: linear-gradient(180deg, rgba(241,245,251,0.80) 0%, rgba(241,245,251,0.88) 100%); } }
+  body { background: transparent; }
+  .bg-stage { display: none; }
+  /* cascade shows through the content bands; white cards stay opaque for legibility */
+  .hero, .stats-ribbon-section, #works, #why, section.product, #team-meetings, #managers, #security, #faq { background: transparent !important; border-top-color: transparent !important; border-bottom-color: transparent !important; }
+  /* "Who we are" frosted band */
+  .bss-intro { padding: clamp(22px, 3vw, 44px) 0 clamp(6px, 1.2vw, 14px); background: transparent; }
+  .bss-intro .container { }
+  .bss-intro-inner { max-width: 680px; margin: 0 auto; padding: clamp(18px,2.4vw,24px) clamp(24px,3.5vw,32px); background: rgba(255,255,255,0.42); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-left: 2px solid var(--blue); border-radius: var(--radius); text-align: left; }
+  .bss-intro-eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+  .bss-intro-copy { max-width: 600px; }
+  .bss-intro-copy p { font-family: var(--font-sans); font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0; }
+  /* Blue Stream nav logo */
+  .brand-img { height: 56px; width: auto; max-width: 280px; display: block; object-fit: contain; }
+  @media (max-width: 760px) { .brand-img { height: 48px; max-width: 240px; } }
 </style>
 
 <script>
@@ -119,28 +140,65 @@
 </head>
 <body>
 
+<!-- Full-page ambient cascade video (Blue Stream Solutions branding) -->
+<div class="page-bg" aria-hidden="true">
+  <video class="page-bg-video page-bg-video--a" autoplay muted playsinline preload="auto">
+    <source src="hero-stream-prod.mp4?v=7" type="video/mp4" />
+  </video>
+  <video class="page-bg-video page-bg-video--b" muted playsinline preload="auto">
+    <source src="hero-stream-prod.mp4?v=7" type="video/mp4" />
+  </video>
+  <div class="page-bg-tint"></div>
+</div>
+<script>
+  (function() {
+    var vidA = document.querySelector('.page-bg-video--a');
+    var vidB = document.querySelector('.page-bg-video--b');
+    if (!vidA || !vidB) return;
+    var FADE = 2.5;
+    vidA.addEventListener('playing', function reveal() {
+      vidA.classList.add('is-active');
+      vidA.removeEventListener('playing', reveal);
+    });
+    function watchForSwap(active, inactive) {
+      function onTime() {
+        if (!active.duration || isNaN(active.duration)) return;
+        if (active.currentTime >= active.duration - FADE) {
+          active.removeEventListener('timeupdate', onTime);
+          inactive.currentTime = 0;
+          var p = inactive.play();
+          if (p && typeof p.catch === 'function') p.catch(function(){});
+          inactive.classList.add('is-active');
+          active.classList.remove('is-active');
+          setTimeout(function() { active.pause(); active.currentTime = 0; }, FADE * 1000);
+          watchForSwap(inactive, active);
+        }
+      }
+      active.addEventListener('timeupdate', onTime);
+    }
+    if (vidA.readyState >= 1) { watchForSwap(vidA, vidB); }
+    else { vidA.addEventListener('loadedmetadata', function() { watchForSwap(vidA, vidB); }, { once: true }); }
+  })();
+</script>
+
 <div class="bg-stage" aria-hidden="true"></div>
 
 <!-- Nav -->
 <header class="nav">
   <div class="container nav-row">
-    <a href="#top" class="brand" aria-label="Blue Mic home">
-      <img class="brand-logo-img" src="logo.png" alt=""
-           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-      <svg class="logo" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none;">
-        <defs>
-          <linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-            <stop offset="0%"  stop-color="#3B82F6"/>
-            <stop offset="55%" stop-color="#1E5FE6"/>
-            <stop offset="100%" stop-color="#1E3A8A"/>
-          </linearGradient>
-        </defs>
-        <circle cx="18" cy="18" r="17" fill="url(#lg)"/>
-        <rect x="14.5" y="9" width="7" height="13" rx="3.5" fill="white"/>
-        <path d="M11 19a7 7 0 0014 0" stroke="white" stroke-width="1.7" stroke-linecap="round" fill="none"/>
-        <line x1="18" y1="24" x2="18" y2="27.5" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
-      </svg>
-      <span>Blue Mic</span>
+    <a href="#top" class="brand" aria-label="Blue Stream Solutions home">
+      <img class="brand-img" src="bluestreamsolutionsllc.png" alt="Blue Stream Solutions"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="brand-fallback" style="display:none; align-items:center; gap:10px;">
+        <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:32px;height:32px;">
+          <defs><linearGradient id="lg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#3B82F6"/><stop offset="55%" stop-color="#1E5FE6"/><stop offset="100%" stop-color="#1E3A8A"/>
+          </linearGradient></defs>
+          <path d="M27 9.5 A14 14 0 1 0 27 26.5" fill="none" stroke="url(#lg)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M11 18 q 3.5 -4 7 0 t 7 0" fill="none" stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+        Blue Stream Solutions
+      </span>
     </a>
     <nav class="nav-links" aria-label="Primary">
       <a href="#works">How It Works</a>
@@ -170,6 +228,18 @@
 </div>
 
 <main id="top">
+
+<!-- Blue Stream Solutions intro band -->
+<section class="bss-intro">
+  <div class="container">
+    <div class="bss-intro-inner">
+      <span class="bss-intro-eyebrow">Who we are</span>
+      <div class="bss-intro-copy">
+        <p>Blue Stream Solutions is a software company with one core mission: make information easier to capture, understand, optimize, and act on. Blue Mic is our flagship product, built from the ground up to deliver on that promise.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Hero -->
 <section class="hero">
