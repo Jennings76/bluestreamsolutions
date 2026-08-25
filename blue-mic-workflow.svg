@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 710" width="1240" height="710" font-family="Inter, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" role="img" aria-label="The Blue Mic workflow: capture a meeting by recording on the road with the iOS or Android app, pasting a transcript, or auto-importing from Zoom or Google Meet, run Sales Coach, then sync notes, tasks, and follow-up emails back to your CRM.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 710" width="1240" height="710" font-family="Inter, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" role="img" aria-label="The Blue Mic workflow: capture a meeting by recording on the road with the iOS or Android app, pasting a transcript, or auto-importing from Microsoft Teams, Google Meet, or Zoom, run Sales Coach, then sync notes, tasks, and follow-up emails back to your CRM.">
   <defs>
     <linearGradient id="panelBg" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#FFFFFF"/>
@@ -61,8 +61,8 @@
 
   <!-- Header -->
   <text x="620" y="50" text-anchor="middle" font-size="28" font-weight="400" fill="#0B1220" font-family="'Instrument Serif', 'Iowan Old Style', 'Apple Garamond', Georgia, 'Times New Roman', serif">How Blue Mic works</text>
-  <text x="620" y="82" text-anchor="middle" font-size="13.5" fill="#5B6478">Blue Mic takes every meeting you record in the field, paste from another tool, or auto-import from Zoom or</text>
-  <text x="620" y="102" text-anchor="middle" font-size="13.5" fill="#5B6478">Google Meet, and runs it through Sales Coach to generate post-meeting wins, priority objectives, coaching</text>
+  <text x="620" y="82" text-anchor="middle" font-size="13.5" fill="#5B6478">Blue Mic takes every meeting you record in the field, paste from another tool, or auto-import from Microsoft Teams,</text>
+  <text x="620" y="102" text-anchor="middle" font-size="13.5" fill="#5B6478">Google Meet, or Zoom, and runs it through Sales Coach to generate post-meeting wins, priority objectives, coaching</text>
   <text x="620" y="122" text-anchor="middle" font-size="13.5" fill="#5B6478">suggestions, drafted client emails, and sales summary notes, then syncs the notes and tasks to your CRM.</text>
 
   <!-- Column labels -->
@@ -117,7 +117,7 @@
   <text x="146" y="227" font-size="16" font-weight="700" fill="#0B1220">Record on the road</text>
   <text x="146" y="249" font-size="12.5" fill="#5B6478">Blue Mic app &#183; iOS &amp; Android</text>
 
-  <!-- A2 Auto-import transcript (Zoom / Google Meet) -->
+  <!-- A2 Auto-import transcript (Microsoft Teams / Google Meet / Zoom) -->
   <rect x="60" y="303" width="290" height="104" rx="16" fill="#FFFFFF" stroke="#DCE6F7" stroke-width="1.5"/>
   <circle cx="105" cy="355" r="24" fill="#E6EEFE"/>
   <g transform="translate(105,355)" fill="none" stroke="#1E5FE6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -125,7 +125,7 @@
     <path d="M3 -2 L8 -5.5 L8 5.5 L3 2 Z"/>
   </g>
   <text x="146" y="349" font-size="16" font-weight="700" fill="#0B1220">Auto-import transcript</text>
-  <text x="146" y="371" font-size="12.5" fill="#5B6478">From Zoom or Google Meet</text>
+  <text x="146" y="371" font-size="12.5" fill="#5B6478">From Teams, Meet, or Zoom</text>
 
   <!-- A3 Paste a transcript -->
   <rect x="60" y="425" width="290" height="104" rx="16" fill="#FFFFFF" stroke="#DCE6F7" stroke-width="1.5"/>
