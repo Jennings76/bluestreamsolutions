@@ -107,6 +107,32 @@
   .mgr-lb-close { position: absolute; top: 18px; right: 22px; width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,0.92); color: #0B1220; font-size: 26px; line-height: 1; cursor: pointer; }
   @media (max-width: 640px) { .mgr-hint { display: none; } }
 
+  /* Manager Dashboard coverflow carousel */
+  .mgr-cf { max-width: 1180px; margin: clamp(20px, 3vw, 40px) auto 0; }
+  .mgr-cf-stage { position: relative; aspect-ratio: 1180 / 480; touch-action: pan-y; }
+  .mgr-cf-card { position: absolute; left: 50%; top: 50%; width: 64%; padding: 0; border: 0; background: none; -webkit-appearance: none; appearance: none; border-radius: 14px; cursor: pointer; transform: translate(-50%, -50%) translateX(var(--x, 0%)) scale(var(--s, 1)); opacity: var(--o, 1); z-index: var(--z, 1); box-shadow: var(--sh, none); transition: transform 1.1s cubic-bezier(.45,.05,.25,1), opacity 1.1s ease, box-shadow 1.1s ease; }
+  .mgr-cf-card img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 826; object-fit: cover; object-position: top; border-radius: 14px; }
+  .mgr-cf-card[data-pos="0"]  { --x: 0%;   --s: 1;    --o: 1;   --z: 5; --sh: 0 28px 64px rgba(16,48,92,0.24); cursor: zoom-in; }
+  .mgr-cf-card[data-pos="1"]  { --x: 40%;  --s: .74;  --o: .8;  --z: 4; --sh: 0 14px 30px rgba(16,48,92,0.14); }
+  .mgr-cf-card[data-pos="-1"] { --x: -40%; --s: .74;  --o: .8;  --z: 4; --sh: 0 14px 30px rgba(16,48,92,0.14); }
+  .mgr-cf-card[data-pos="2"]  { --x: 64%;  --s: .56;  --o: .4;  --z: 3; --sh: 0 8px 20px rgba(16,48,92,0.10); }
+  .mgr-cf-card[data-pos="-2"] { --x: -64%; --s: .56;  --o: .4;  --z: 3; --sh: 0 8px 20px rgba(16,48,92,0.10); }
+  .mgr-cf-card:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+  .mgr-cf-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 18px; }
+  .mgr-cf-arrow { flex: none; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(16,48,92,0.08); transition: color .2s, border-color .2s; }
+  .mgr-cf-arrow:hover, .mgr-cf-arrow:focus-visible { color: var(--blue); border-color: var(--blue); outline: none; }
+  .mgr-cf-caption { margin: 0; width: 680px; max-width: 72%; min-height: 4.5em; text-align: center; font-size: 16px; line-height: 1.5; color: var(--muted); }
+  .mgr-cf-caption strong { color: var(--ink); font-weight: 600; }
+  @media (max-width: 640px) {
+    .mgr-cf-stage { aspect-ratio: 2 / 1; }
+    .mgr-cf-card { width: 84%; }
+    .mgr-cf-card[data-pos="1"]  { --x: 30%;  --s: .8; --o: .55; }
+    .mgr-cf-card[data-pos="-1"] { --x: -30%; --s: .8; --o: .55; }
+    .mgr-cf-card[data-pos="2"], .mgr-cf-card[data-pos="-2"] { --o: 0; }
+    .mgr-cf-caption { font-size: 14.5px; max-width: 64%; min-height: 13.5em; }
+  }
+  @media (prefers-reduced-motion: reduce) { .mgr-cf-card { transition: none; } }
+
   /* Tighter, vertically-centered CTA */
   .cta { padding: clamp(40px, 5.5vw, 76px) 0; }
   .cta > .container > *:last-child { margin-bottom: 0; }
@@ -721,15 +747,11 @@
   </div>
 </section>
 
-<!-- Manager Dashboards (Coming Soon) -->
+<!-- Manager Dashboards -->
 <section id="managers" class="product reveal" style="background: var(--bg); border-top: none;">
   <div class="container" style="text-align:center;">
     <div class="product-text" style="max-width: 860px; margin: 0 auto; text-align: center;">
-      <span class="tier-badge tier-badge--soon">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2.5 1.5"/></svg>
-        Coming Soon
-      </span>
-      <h2 style="margin-top: 22px;">Manager <span class="italic">Dashboards.</span></h2>
+      <h2 style="margin-top: 0;">Manager <span class="italic">Dashboards.</span></h2>
       <p class="lede">
         A live view for sales leadership, built automatically from the meetings your reps are already recording. See who's improving, where every opportunity stands, and exactly where your attention will move the needle.
       </p>
@@ -740,16 +762,23 @@
         <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span> Roll-ups built automatically from Sales Coach output</li>
       </ul>
       <p class="contact-line">
-        Want early access? Email <a href="mailto:info@blue-mic.com?subject=Manager%20Dashboards%20early%20access">info@blue-mic.com</a>.
+        Want a walkthrough? Email <a href="mailto:info@blue-mic.com?subject=Manager%20Dashboards%20walkthrough">info@blue-mic.com</a>.
       </p>
     </div>
 
-    <figure class="mgr-figure">
-      <button class="mgr-win" style="left:25.3%; top:26.8%; width:43.3%; --rot:-7deg; z-index:1;" data-img="manager-window-strengths.png" aria-label="Enlarge: Top strengths and team coaching progress"><img src="manager-window-strengths.png" alt="" /></button>
-      <button class="mgr-win" style="left:64.6%; top:18.8%; width:32.5%; --rot:4deg; z-index:2;" data-img="manager-window-medals.png" aria-label="Enlarge: TriFecta medals and scores"><img src="manager-window-medals.png" alt="" /></button>
-      <button class="mgr-win" style="left:22.4%; top:69.4%; width:42.2%; --rot:-2deg; z-index:3;" data-img="manager-window-funnel.png" aria-label="Enlarge: Funnel and conversion"><img src="manager-window-funnel.png" alt="" /></button>
-      <button class="mgr-win" style="left:70.5%; top:62.4%; width:55.7%; --rot:2deg; z-index:4;" data-img="manager-window-lead.png" aria-label="Enlarge: Leadership view with company temperature and account engagement"><img src="manager-window-lead.png" alt="" /></button>
-      <span class="mgr-hint">Click or tap a panel to enlarge</span>
+    <figure class="mgr-cf" aria-roledescription="carousel" aria-label="Manager Dashboard views">
+      <div class="mgr-cf-stage">
+        <button class="mgr-cf-card" type="button" data-pos="0" data-img="mgr-overview.jpg" data-label="Overview" data-caption="See your whole team at a glance: every rep’s meetings, coached meetings and Blue Mic Awards, plus six months of meeting volume. Select a rep or a Gold, Silver or Bronze tier to open the meetings behind it." aria-label="Enlarge: Overview"><img src="mgr-overview.jpg" alt="Manager Dashboard Overview tab: rep leaderboard, meetings by month and Blue Mic Awards by tier" width="1600" height="826" loading="lazy" decoding="async" /></button>
+        <button class="mgr-cf-card" type="button" data-pos="1" data-img="mgr-coaching.jpg" data-label="Coaching" data-caption="Know exactly what to coach this month. Blue Mic picks three team priorities from last month’s most-missed themes, tracks how often each is still missed, and gives every rep their own three to close." aria-label="Show Coaching"><img src="mgr-coaching.jpg" alt="Manager Dashboard Coaching tab: the month’s team priorities with miss rates per theme" width="1600" height="826" loading="lazy" decoding="async" /></button>
+        <button class="mgr-cf-card" type="button" data-pos="2" data-img="mgr-pipeline.jpg" data-label="Pipeline" data-caption="See what coaching does for revenue. Follow every company your reps coached from first meeting to signed agreement and gross profit, with closing ratio and sales cycle compared to the prior period." aria-label="Show Pipeline"><img src="mgr-pipeline.jpg" alt="Manager Dashboard Pipeline tab: funnel from qualified companies to gross profit, with sales-cycle stats" width="1600" height="826" loading="lazy" decoding="async" /></button>
+        <button class="mgr-cf-card" type="button" data-pos="-2" data-img="mgr-accounts.jpg" data-label="Accounts" data-caption="Know where every account stands: CRM status, last coached meeting, Blue Mic TriFecta score, and client sentiment read from what the client actually said, with the quotes to back it up." aria-label="Show Accounts"><img src="mgr-accounts.jpg" alt="Manager Dashboard Accounts tab: TriFecta score, client sentiment and accounts table" width="1600" height="826" loading="lazy" decoding="async" /></button>
+        <button class="mgr-cf-card" type="button" data-pos="-1" data-img="mgr-scorecard.jpg" data-label="Scorecard" data-caption="Coach how reps run the call. Track talk time and longest monologue against targets you set, and see whether newer and senior reps hand off on joint calls as planned." aria-label="Show Scorecard"><img src="mgr-scorecard.jpg" alt="Manager Dashboard Scorecard tab: team call score by section and rep handoff timeline" width="1600" height="826" loading="lazy" decoding="async" /></button>
+      </div>
+      <div class="mgr-cf-controls">
+        <button class="mgr-cf-arrow" type="button" data-dir="-1" aria-label="Previous view"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <p class="mgr-cf-caption" aria-live="polite"><strong>Overview.</strong> See your whole team at a glance: every rep’s meetings, coached meetings and Blue Mic Awards, plus six months of meeting volume. Select a rep or a Gold, Silver or Bronze tier to open the meetings behind it.</p>
+        <button class="mgr-cf-arrow" type="button" data-dir="1" aria-label="Next view"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
     </figure>
   </div>
 </section>
@@ -926,7 +955,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=3"></script>
+<script src="script.js?v=7"></script>
 <div class="mgr-lightbox" id="mgrLightbox" aria-hidden="true">
   <button class="mgr-lb-close" aria-label="Close">&times;</button>
   <img id="mgrLightboxImg" alt="" />
