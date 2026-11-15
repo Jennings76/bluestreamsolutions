@@ -27,7 +27,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     // Hero waveform behind the logo
     const heroWave = document.querySelector('.hero-mark .waveform');
-    buildBars(heroWave, 36, { maxH: 60, minH: 6 });
+    buildBars(heroWave, 40, { maxH: 44, minH: 5 });
 
     // iPhone mockup waveform: full-width recording screen, dense bars
     // Modulated envelope (not pure random) so the waveform reads as "speech".

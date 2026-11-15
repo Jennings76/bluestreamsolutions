@@ -352,10 +352,27 @@ section { padding: clamp(72px, 10vw, 132px) 0; position: relative; }
   50%      { opacity: 1;   transform: translateX(-50%) scale(1.06); }
 }
 .hero-mark {
-  width: 128px;
-  height: 128px;
+  width: 136px;
+  height: 136px;
   margin: 0 auto 28px;
   position: relative;
+}
+/* soft white halo behind the logo: restores the snowy mountains
+   and keeps the waveform from showing through the art */
+.hero-mark::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 115%;
+  height: 80%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side,
+    rgba(255,255,255,0.55) 0%,
+    rgba(255,255,255,0.3) 55%,
+    rgba(255,255,255,0) 100%);
+  z-index: 0;
+  pointer-events: none;
 }
 .hero-logo-img,
 .hero-logo-svg {
@@ -375,7 +392,7 @@ section { padding: clamp(72px, 10vw, 132px) 0; position: relative; }
 }
 .hero-mark .waveform {
   position: absolute;
-  inset: -38px;
+  inset: -24px -56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -383,6 +400,9 @@ section { padding: clamp(72px, 10vw, 132px) 0; position: relative; }
   pointer-events: none;
   opacity: 0.55;
   z-index: -1;
+  /* fade the bars out behind the logo, keep them on both sides */
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 18%, transparent 36%, transparent 64%, #000 82%, #000 100%);
+          mask-image: linear-gradient(90deg, #000 0%, #000 18%, transparent 36%, transparent 64%, #000 82%, #000 100%);
 }
 .hero-mark .waveform .bar {
   width: 3px;
