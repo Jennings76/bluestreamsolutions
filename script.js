@@ -219,8 +219,35 @@ document.addEventListener('DOMContentLoaded', function () {
   root.addEventListener('mouseleave', function () { hovering = false; });
   if (!reduce) {
     setInterval(function () {
-      if (!stopped && !hovering && !document.hidden) go(i + 1, false);
+      if (!stopped && !hovering && !document.hidden && !document.documentElement.classList.contains('mgr-lb-open')) go(i + 1, false);
     }, 13000);
   }
   render();
+});
+
+/* Enlarged image: pause background videos and hide the page behind it while open */
+document.addEventListener('DOMContentLoaded', function () {
+  var lb = document.getElementById('mgrLightbox');
+  if (!lb || !window.MutationObserver) return;
+  var root = document.documentElement;
+  var paused = [];
+  var wasOpen = false;
+  function sync() {
+    var open = lb.classList.contains('open');
+    if (open === wasOpen) return;
+    wasOpen = open;
+    if (open) {
+      root.classList.add('mgr-lb-open');
+      paused = Array.prototype.filter.call(document.querySelectorAll('video'), function (v) { return !v.paused; });
+      paused.forEach(function (v) { v.pause(); });
+    } else {
+      root.classList.remove('mgr-lb-open');
+      paused.forEach(function (v) {
+        var p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+      });
+      paused = [];
+    }
+  }
+  new MutationObserver(sync).observe(lb, { attributes: true, attributeFilter: ['class'] });
 });

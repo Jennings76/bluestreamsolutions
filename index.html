@@ -132,6 +132,10 @@
     .mgr-cf-caption { font-size: 14.5px; max-width: 64%; min-height: 13.5em; }
   }
   @media (prefers-reduced-motion: reduce) { .mgr-cf-card { transition: none; } }
+  /* While an enlarged image is open, draw only the image (keeps iPhone Safari from running out of memory when zooming in) */
+  html.mgr-lb-open body > *:not(.mgr-lightbox) { visibility: hidden !important; }
+  html.mgr-lb-open .mgr-lightbox { background: #0B1220; }
+  @media (max-width: 820px) { .mgr-lightbox img { box-shadow: none; } }
 
   /* Tighter, vertically-centered CTA */
   .cta { padding: clamp(40px, 5.5vw, 76px) 0; }
@@ -955,7 +959,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=7"></script>
+<script src="script.js?v=8"></script>
 <div class="mgr-lightbox" id="mgrLightbox" aria-hidden="true">
   <button class="mgr-lb-close" aria-label="Close">&times;</button>
   <img id="mgrLightboxImg" alt="" />
