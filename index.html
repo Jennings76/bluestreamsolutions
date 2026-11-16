@@ -206,7 +206,7 @@
 <!-- anchor-fix -->
 <style>
   /* Menu jumps: land Sales Coach and Integrations at the same spot below the menu bar as the other sections */
-  #coach { scroll-margin-top: calc(clamp(72px, 10vw, 132px) + 5px); }
+  #coach { scroll-margin-top: calc(clamp(72px, 10vw, 132px) + 5px - clamp(40px, 5vw, 64px)); }
   #integrations { scroll-margin-top: calc(clamp(72px, 10vw, 132px) + 5px - clamp(20px, 3vw, 36px)); }
   #managers { scroll-margin-top: 8px; }
 </style>
@@ -226,6 +226,9 @@
   #security > .container > div:first-child > h2 { max-width: 780px; margin-left: auto; margin-right: auto; }
   #security .lede { max-width: 900px; }
   #managers .mgr-cf { margin-top: max(0px, calc(28px - 2vw)); }
+  /* Divider line between the three feature cards and Sales Coach, matching the section dividers */
+  #works #coach { margin-top: clamp(40px, 5vw, 64px) !important; padding-top: clamp(40px, 5vw, 64px); position: relative; }
+  #works #coach::before { content: ""; position: absolute; top: 0; left: 50%; width: 100vw; transform: translateX(-50%); height: 1px; background: var(--line-soft); pointer-events: none; }
 </style>
 </head>
 <body>
@@ -931,7 +934,7 @@
           What platforms is Blue Mic available on?
           <span style="color: var(--blue); font-size: 22px;">+</span>
         </summary>
-        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Blue Mic is available as an iPhone app, an Android app, and a web app. Reps record and run the full workflow on iOS and Android in the field, and the web app gives your team browser access to meetings, Sales Coach, and (coming soon) manager dashboards.</div>
+        <div style="padding: 0 26px 22px; color: var(--muted); font-size: 15px;">Blue Mic is available as an iPhone app, an Android app, and a web app. Reps record and run the full workflow on iOS and Android in the field, and the web app gives your team browser access to meetings, Sales Coach, and Manager Dashboards.</div>
       </details>
       <details class="card" style="padding: 0;">
         <summary style="cursor:pointer; padding: 22px 26px; font-weight: 600; list-style: none; display:flex; justify-content: space-between; align-items: center;">
