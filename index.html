@@ -190,6 +190,43 @@
     .nav-burger { display: flex; }
   }
 </style>
+<!-- section-spacing -->
+<style>
+  /* Even spacing between main sections: every gap matches two standard section paddings */
+  :root { --sec-pad: clamp(72px, 10vw, 132px); }
+  .stats-ribbon-section { padding-bottom: calc(var(--sec-pad) * 0.493) !important; }
+  #works { padding-bottom: calc(var(--sec-pad) * 0.657) !important; }
+  #why { padding-bottom: calc(var(--sec-pad) * 0.555) !important; }
+  #why + section { padding-bottom: calc(var(--sec-pad) * 0.773) !important; }
+  #why + section + section { padding-bottom: calc(var(--sec-pad) * 0.43) !important; }
+  #team-meetings { padding-bottom: calc(var(--sec-pad) * 0.469) !important; }
+  #managers { padding-bottom: calc(var(--sec-pad) * 0.454) !important; }
+  #security { padding-bottom: calc(var(--sec-pad) * 0.477) !important; }
+</style>
+<!-- anchor-fix -->
+<style>
+  /* Menu jumps: land Sales Coach and Integrations at the same spot below the menu bar as the other sections */
+  #coach { scroll-margin-top: calc(clamp(72px, 10vw, 132px) + 5px); }
+  #integrations { scroll-margin-top: calc(clamp(72px, 10vw, 132px) + 5px - clamp(20px, 3vw, 36px)); }
+  #managers { scroll-margin-top: 8px; }
+</style>
+<!-- cta-footer-compact -->
+<style>
+  /* Shorter closing band and footer */
+  .cta { padding: clamp(32px, 3.8vw, 48px) 0 !important; }
+  .cta h2 { max-width: 30ch; margin-bottom: 12px; }
+  .cta p { max-width: 62ch; }
+  .footer { padding: 28px 0 20px; }
+  .footer-bottom { margin-top: 16px; padding-top: 14px; }
+  @media (max-width: 760px) { .footer .footer-grid { gap: 12px; } }
+  #managers .contact-line { margin: 40px auto 0; max-width: none; text-align: center; }
+  #managers .product-text .lede { margin-left: auto; margin-right: auto; text-align: center; max-width: 720px; }
+  #team-meetings .lede { max-width: 880px; }
+  #security > .container > div:first-child { max-width: 900px !important; }
+  #security > .container > div:first-child > h2 { max-width: 780px; margin-left: auto; margin-right: auto; }
+  #security .lede { max-width: 900px; }
+  #managers .mgr-cf { margin-top: max(0px, calc(28px - 2vw)); }
+</style>
 </head>
 <body>
 
