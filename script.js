@@ -118,7 +118,7 @@
       });
       // Close if viewport grows back to desktop while open
       window.addEventListener('resize', () => {
-        if (window.innerWidth > 760 && menu.classList.contains('open')) close();
+        if (menu.classList.contains('open') && burger && getComputedStyle(burger).display === 'none') close();
       });
     }
   });

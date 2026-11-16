@@ -303,6 +303,18 @@
   .bm .bm-url { text-decoration: none; } .bm .bm-url:hover { text-decoration: underline; }
   .bm .bm-home { color: inherit; text-decoration: none; } .bm .bm-home:hover { color: var(--blue); }
 </style>
+<!-- nav-fit -->
+<style>
+  /* Menu fit: links stay on one line, logo left, links centered in the remaining space; the menu button takes over below 1100px */
+  .nav-links a { white-space: nowrap; }
+  .nav-row { grid-template-columns: auto 1fr auto; }
+  .nav-links { gap: 22px; }
+  @media (max-width: 1100px) {
+    .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 0; }
+    .nav-links { display: none; }
+    .nav-burger { display: flex; }
+  }
+</style>
 </head>
 <body>
 
@@ -358,6 +370,7 @@
       <a href="index.html#coach">Sales Coach</a>
       <a href="index.html#integrations">Integrations</a>
       <a href="index.html#team-meetings">Team Meetings</a>
+      <a href="index.html#managers">Manager Dashboards</a>
       <a href="index.html#security">Security</a>
       <a href="index.html#faq">FAQ</a>
       <a href="consulting.html" aria-current="page">Consulting</a>
@@ -376,6 +389,7 @@
     <a href="index.html#coach">Sales Coach</a>
     <a href="index.html#integrations">Integrations</a>
     <a href="index.html#team-meetings">Team Meetings</a>
+    <a href="index.html#managers">Manager Dashboards</a>
     <a href="index.html#security">Security</a>
     <a href="index.html#faq">FAQ</a>
     <a href="consulting.html" aria-current="page">Consulting</a>
@@ -457,6 +471,6 @@
   </div>
 </footer>
 
-<script src="script.js"></script>
+<script src="script.js?v=9"></script>
 </body>
 </html>

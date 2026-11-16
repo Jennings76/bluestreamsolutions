@@ -178,6 +178,18 @@
     window.scrollTo(0, 0);
   });
 </script>
+<!-- nav-fit -->
+<style>
+  /* Menu fit: links stay on one line, logo left, links centered in the remaining space; the menu button takes over below 1100px */
+  .nav-links a { white-space: nowrap; }
+  .nav-row { grid-template-columns: auto 1fr auto; }
+  .nav-links { gap: 22px; }
+  @media (max-width: 1100px) {
+    .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 0; }
+    .nav-links { display: none; }
+    .nav-burger { display: flex; }
+  }
+</style>
 </head>
 <body>
 
@@ -246,6 +258,7 @@
       <a href="#coach">Sales Coach</a>
       <a href="#integrations">Integrations</a>
       <a href="#team-meetings">Team Meetings</a>
+      <a href="#managers">Manager Dashboards</a>
       <a href="#security">Security</a>
       <a href="#faq">FAQ</a>
       <a href="consulting.html">Consulting</a>
@@ -264,6 +277,7 @@
     <a href="#coach">Sales Coach</a>
     <a href="#integrations">Integrations</a>
     <a href="#team-meetings">Team Meetings</a>
+    <a href="#managers">Manager Dashboards</a>
     <a href="#security">Security</a>
     <a href="#faq">FAQ</a>
     <a href="consulting.html">Consulting</a>
@@ -959,7 +973,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=8"></script>
+<script src="script.js?v=9"></script>
 <div class="mgr-lightbox" id="mgrLightbox" aria-hidden="true">
   <button class="mgr-lb-close" aria-label="Close">&times;</button>
   <img id="mgrLightboxImg" alt="" />
